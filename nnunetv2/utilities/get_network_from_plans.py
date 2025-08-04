@@ -5,6 +5,12 @@ from typing import Union
 from nnunetv2.utilities.find_class_by_name import recursive_find_python_class
 from batchgenerators.utilities.file_and_folder_operations import join
 
+import sys
+import os
+sys.path.append(r"E:\nnunet_code")
+
+from layer import Convolution3DCH
+from config import Cross_hair
 
 def get_network_from_plans(arch_class_name, arch_kwargs, arch_kwargs_req_import, input_channels, output_channels,
                            allow_init=True, deep_supervision: Union[bool, None] = None):
@@ -13,6 +19,10 @@ def get_network_from_plans(arch_class_name, arch_kwargs, arch_kwargs_req_import,
     for ri in arch_kwargs_req_import:
         if architecture_kwargs[ri] is not None:
             architecture_kwargs[ri] = pydoc.locate(architecture_kwargs[ri])
+
+    if Cross_hair:
+        print("use cross_hair--------------------")
+        architecture_kwargs["conv_op"] = Convolution3DCH
 
     nw_class = pydoc.locate(network_class)
     # sometimes things move around, this makes it so that we can at least recover some of that
