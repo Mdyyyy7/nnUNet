@@ -483,15 +483,15 @@ class ExperimentPlanner(object):
             plan_3d_lowres = None
 
         # 2D configuration
-        plan_2d = self.get_plans_for_configuration(fullres_spacing_transposed[1:],
-                                                   new_median_shape_transposed[1:],
-                                                   self.generate_data_identifier('2d'), approximate_n_voxels_dataset,
-                                                   _tmp)
-        plan_2d['batch_dice'] = True
+        # plan_2d = self.get_plans_for_configuration(fullres_spacing_transposed[1:],
+        #                                            new_median_shape_transposed[1:],
+        #                                            self.generate_data_identifier('2d'), approximate_n_voxels_dataset,
+        #                                            _tmp)
+        # plan_2d['batch_dice'] = True
 
-        print('2D U-Net configuration:')
-        print(plan_2d)
-        print()
+        # print('2D U-Net configuration:')
+        # print(plan_2d)
+        # print()
 
         # median spacing and shape, just for reference when printing the plans
         median_spacing = np.median(self.dataset_fingerprint['spacings'], 0)[transpose_forward]
@@ -502,7 +502,7 @@ class ExperimentPlanner(object):
         shutil.copy(join(self.raw_dataset_folder, 'dataset.json'),
                     join(nnUNet_preprocessed, self.dataset_name, 'dataset.json'))
 
-        # json is ###. I hate it... "Object of type int64 is not JSON serializable"
+        # json is ###. I hate it... "Object of type int64 is not JSON serializable",'2d': plan_2d
         plans = {
             'dataset_name': self.dataset_name,
             'plans_name': self.plans_identifier,
@@ -511,7 +511,7 @@ class ExperimentPlanner(object):
             'image_reader_writer': self.determine_reader_writer().__name__,
             'transpose_forward': [int(i) for i in transpose_forward],
             'transpose_backward': [int(i) for i in transpose_backward],
-            'configurations': {'2d': plan_2d},
+            'configurations': {},
             'experiment_planner_used': self.__class__.__name__,
             'label_manager': 'LabelManager',
             'foreground_intensity_properties_per_channel': self.dataset_fingerprint[
